@@ -1,0 +1,36 @@
+{
+  "name": "sagasphere",
+  "version": "1.0.0",
+  "description": "base container",
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "rollup -c",
+    "start": "node dist/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K0rdan/SagaSphere_Backend.git"
+  },
+  "author": "Kordan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/K0rdan/SagaSphere_Backend/issues"
+  },
+  "homepage": "https://github.com/K0rdan/SagaSphere_Backend#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "colors": "^1.1.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  }
+}

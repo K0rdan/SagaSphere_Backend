@@ -1,0 +1,6 @@
+.vscode/
+.env
+sagasphere/.vscode/
+sagasphere/node_modules/
+sagasphere/dist/
+sagasphere/npm-debug.log.502378908
