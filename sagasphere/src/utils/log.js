@@ -23,11 +23,12 @@ function Logger (level, tags, ...data) {
     for(let indexTag in tags)
         logStr += '[' + tags[indexTag] + ']';
 
-    console.log(logStr, level(data.toString()));
+    console.log(logStr, level(data.join(", ")));
 }
 
 export const Log = {
-    info: (tags, ...data) => Logger(msgLevel.info, tags, ...data)
+    info:   (tags, ...data) => Logger(msgLevel.info, tags, ...data),
+    err:    (tags, ...data) => Logger(msgLevel.error, tags, ...data)
 };
 
 export default Log;

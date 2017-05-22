@@ -3,7 +3,8 @@ let globals = {}, externals = [
   "express-session",
   "colors",
   "cookie-parser",
-  "body-parser"
+  "body-parser",
+  "mysql"
 ];
 
 for(let i in externals){
