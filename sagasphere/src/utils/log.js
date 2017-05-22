@@ -10,7 +10,7 @@ function getDate() {
     let now = new Date(), nowStr = "";
 
     nowStr += now.getFullYear() + '/';
-    nowStr += (now.getMonth() < 10 ? '0' + now.getMonth() : now.getMonth()) + '/';
+    nowStr += ((now.getMonth()+1) < 10 ? '0' + (now.getMonth()+1) : (now.getMonth()+1)) + '/';
     nowStr += (now.getDate() < 10 ? '0' + now.getDate() : now.getDate()) + '-';
     nowStr += (now.getHours() < 10 ? '0' + now.getHours() : now.getHours()) + ':';
     nowStr += (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':';

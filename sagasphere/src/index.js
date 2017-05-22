@@ -16,6 +16,7 @@ import { Log }      from "./utils/index";
 const logTags       = ["SagaSphere_Base"];
 const port          = process.env.SAGASPHERE_PORT || 80;
 const app           = express();
+// For local setup look at the README file.
 let mysqlConnection = mysql.createConnection({
     host        : process.env.SAGASPHERE_MYSQL_HOST || "sagasphere_mysql",
     localAddress: process.env.SAGASPHERE_MYSQL_LOCALADDRESS || "sagasphere_mysql",
@@ -57,7 +58,7 @@ function initServer() {
             }));
         }
         app.listen(port, () => {
-            Log.info(logTags, "Server listening on port " + port);
+            Log.info(logTags, "Server listening on port " + port + '.');
             resolve();
         });
     });
@@ -68,6 +69,10 @@ function initMySQL() {
         mysqlConnection.connect((err) => {
             if(err){
                 reject(err); 
+            }
+            else {
+                Log.info(logTags, "MySQL connection (" + mysqlConnection.config.host + ':' + mysqlConnection.config.port + ") established.");
+                resolve();
             }
         });
     });
@@ -81,8 +86,15 @@ function initRoutes() {
     });
     // LOGIN
     app.post("/login",(req, res) => {
-        if(!req.cookies.sagasphere_user)
-            routes.Login(req, res);
+        if(!req.cookies.sagasphere_user) {
+            routes.Login(req, res, mysqlConnection)
+                .then(() => {
+
+                })
+                .catch((err) => {
+
+                });
+        }
         else
             res.json({status: "ok", message: "You're now connected.", user : req.cookies.sagasphere_user});
     });
@@ -99,6 +111,9 @@ function initRoutes() {
 initServer()
     .then(initMySQL)
     .then(initRoutes)
+    .then(() => {
+        Log.info(logTags, "Server successfully initialized.");
+    })
     .catch((err) => {
         Log.err(logTags, "Error on server initialization", err);
     });
