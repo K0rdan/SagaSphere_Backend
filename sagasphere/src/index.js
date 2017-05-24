@@ -124,7 +124,7 @@ function initRoutes() {
         if(!req.cookies.sagasphere_user)
             res.json({status: "ko", message: "You're not connected."});
         else{
-            routes.User.getFeeds(req, res);
+            routes.User.getFeeds(req, res, mysqlConnection);
         }
     });
 }
