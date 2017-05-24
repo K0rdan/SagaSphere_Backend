@@ -11,5 +11,6 @@ let mysqlConnection = mysql.createConnection({
     database    : process.env.SAGASPHERE_MYSQL_DATABASE || "sagasphere"
 });
 ```
+Or with your custom environment data.
 
 NOTE : Replace the password by the one defined in the '__.env__' file for the environment variable '__SAGASPHERE_MYSQL_PASSWORD__'

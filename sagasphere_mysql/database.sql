@@ -29,7 +29,7 @@ USE `sagasphere`;
 --
 -- Structure de la table `sagas`
 --
-
+DROP TABLE IF EXISTS `sagas`;
 CREATE TABLE `sagas` (
   `id` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
@@ -44,13 +44,26 @@ CREATE TABLE `sagas` (
 --
 -- Structure de la table `tracks`
 --
-
+DROP TABLE IF EXISTS `tracks`;
 CREATE TABLE `tracks` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `duration` int(11) NOT NULL,
   `creation` date NOT NULL,
   `sagaID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL COMMENT '',
+  `pass` varchar(50) NOT NULL COMMENT '',
+  `email` varchar(254) NOT NULL COMMENT 'RFC compliance'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -71,6 +84,12 @@ ALTER TABLE `tracks`
   ADD KEY `sagaID` (`sagaID`);
 
 --
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -84,6 +103,13 @@ ALTER TABLE `sagas`
 --
 ALTER TABLE `tracks`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Contraintes pour les tables déchargées
 --

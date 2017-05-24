@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 -- Structure de la table `sagas`
 --
-
+DROP TABLE IF EXISTS `sagas`;
 CREATE TABLE `sagas` (
   `id` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
@@ -49,7 +49,7 @@ INSERT INTO `sagas` (`id`, `title`, `image`, `author`, `creation`, `url`) VALUES
 --
 -- Structure de la table `tracks`
 --
-
+DROP TABLE IF EXISTS `tracks`;
 CREATE TABLE `tracks` (
   `id` int(11) NOT NULL,
   `trackNumber` int(11) NOT NULL,
@@ -59,6 +59,27 @@ CREATE TABLE `tracks` (
   `creation` date NOT NULL,
   `sagaID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(24) NOT NULL COMMENT '',
+  `pass` varchar(16) NOT NULL COMMENT '',
+  `email` varchar(254) NOT NULL COMMENT 'RFC compliance'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `pass`, `email`) VALUES
+(1, 'test', 'pass', 'test@test.fr'),
+(2, 'Kordan', 'pass', 'test@test.fr');
 
 --
 -- Déchargement des données de la table `tracks`
@@ -85,6 +106,12 @@ ALTER TABLE `tracks`
   ADD KEY `sagaID` (`sagaID`);
 
 --
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -98,6 +125,11 @@ ALTER TABLE `sagas`
 --
 ALTER TABLE `tracks`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Contraintes pour les tables déchargées
 --

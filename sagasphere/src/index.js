@@ -50,13 +50,40 @@ function initServer() {
                 saveUninitialized : false,                            // No session for unauthorized users
                 resave            : false,                            // Disable unmodified session saving
                 cookie: {
-                    domain  : 'localhost',
-                    path    : '/',
+                    domain  : process.env.SAGASPHERE_COOKIE_DOMAIN  || "localhost",
+                    path    : process.env.SAGASPHERE_COOKIE_PATH    || '/',
                     httpOnly: true,
-                    maxAge  : 24*60*60*1000                           // 24h
+                    maxAge  : process.env.SAGASPHERE_COOKIE_MAXAGE  || 24*60*60*1000    // Default : 24h
                 }
             }));
         }
+        app.use((req, res, next) => {
+            res.promise = (promise) => {
+                promise
+                    .then((resObj) => {
+                        res.status(resObj.code).json({ status: "ok", message: resObj.message });
+                    })
+                    .catch((err) => {
+                        // Add specific route tag to the list
+                        logTags.push(err.route);
+                        if(err){
+                            if(err.code >= 400 && err.code < 500)
+                                Log.warn(logTags, "User error", err.error);
+                            else if (err.code >= 500)
+                                Log.err(logTags, "Internal error", err.error);
+                            else 
+                                Log.err(logTags, "Unhandled error", err.error);
+                            res.status(err.code).json({ status: "ko", message: err.message });
+                        }
+                        else {
+                            Log.err(logTags, "Unhandled error");
+                        }
+                        // Remove the route tag
+                        logTags.pop();
+                    });
+            }
+            next();
+        })
         app.listen(port, () => {
             Log.info(logTags, "Server listening on port " + port + '.');
             resolve();
@@ -87,13 +114,7 @@ function initRoutes() {
     // LOGIN
     app.post("/login",(req, res) => {
         if(!req.cookies.sagasphere_user) {
-            routes.Login(req, res, mysqlConnection)
-                .then(() => {
-
-                })
-                .catch((err) => {
-
-                });
+            res.promise(routes.Login(req, res, mysqlConnection));
         }
         else
             res.json({status: "ok", message: "You're now connected.", user : req.cookies.sagasphere_user});

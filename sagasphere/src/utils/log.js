@@ -19,15 +19,20 @@ function getDate() {
 }
 
 function Logger (level, tags, ...data) {
+    // Default date tag
     let logStr = '[' + getDate() + ']';
+    // Add other tags
     for(let indexTag in tags)
         logStr += '[' + tags[indexTag] + ']';
+    // Remove "undefined" or "null" data elements.
+    data = data.filter(d => d);
 
     console.log(logStr, level(data.join(", ")));
 }
 
 export const Log = {
     info:   (tags, ...data) => Logger(msgLevel.info, tags, ...data),
+    warn:   (tags, ...data) => Logger(msgLevel.warn, tags, ...data),
     err:    (tags, ...data) => Logger(msgLevel.error, tags, ...data)
 };
 
