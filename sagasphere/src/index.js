@@ -18,15 +18,16 @@ const port          = process.env.SAGASPHERE_PORT || 80;
 const app           = express();
 // For local setup look at the README file.
 let mysqlConnection = mysql.createConnection({
-    host        : process.env.SAGASPHERE_MYSQL_HOST || "sagasphere_mysql",
-    localAddress: process.env.SAGASPHERE_MYSQL_LOCALADDRESS || "sagasphere_mysql",
+    host        : process.env.SAGASPHERE_MYSQL_HOST || "localhost",
+    localAddress: process.env.SAGASPHERE_MYSQL_LOCALADDRESS || "localhost",
     user        : process.env.SAGASPHERE_MYSQL_USER || "root",
-    password    : process.env.SAGASPHERE_MYSQL_PASS || "",
+    password    : process.env.SAGASPHERE_MYSQL_PASS || "cky_w+IQ@l",
     database    : process.env.SAGASPHERE_MYSQL_DATABASE || "sagasphere"
 });
 
 //////////
 // Entry point
+process.env.DEBUG = "true";
 if(process.env.DEBUG == "true")
     Log.info(logTags, "Debug mode activated");
 
@@ -61,7 +62,7 @@ function initServer() {
             res.promise = (promise) => {
                 promise
                     .then((resObj) => {
-                        res.status(resObj.code).json({ status: "ok", message: resObj.message });
+                        res.status(resObj.code).json({ status: "ok", message: resObj.message, data: resObj.data });
                     })
                     .catch((err) => {
                         // Add specific route tag to the list
@@ -116,15 +117,17 @@ function initRoutes() {
         if(!req.cookies.sagasphere_user) {
             res.promise(routes.Login(req, res, mysqlConnection));
         }
-        else
+        else {
             res.json({status: "ok", message: "You're now connected.", user : req.cookies.sagasphere_user});
+        }
     });
     // USER FEEDS
     app.get("/user/feeds", (req, res) => {
-        if(!req.cookies.sagasphere_user)
-            res.json({status: "ko", message: "You're not connected."});
-        else{
-            routes.User.getFeeds(req, res, mysqlConnection);
+        if(!req.cookies.sagasphere_user) {
+            res.status(401).json({status: "ko", message: "You're not connected."});
+        }
+        else {
+            res.promise(routes.User.getFeeds(req, res, mysqlConnection));
         }
     });
 }

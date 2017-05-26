@@ -4,22 +4,42 @@ const logTags = ["SagaSphere_Base", "GetFeeds"];
 
 export function getFeeds(req, res, mysql) {
     return new Promise((resolve, reject) => {
-        let user = req.cookies.sagasphere_user;
+        let user = null, userID = null, userName = null;
+        try{
+            user = req.cookies.sagasphere_user;    
+            userID = Number.parseInt(user.id);
+            userName = user.name;
+        }
+        catch(err) {
+            reject({ code: 400, route: "GetFeeds", message: "Error with cookie's data.", error: "Error when parsing the cookie." });
+        }
+
         // [KO] Missing or invalid cookie
         if(!user || !user.id) {
             reject({ code: 400, route: "GetFeeds", message: "User ID not found.", error: "User ID not found." });
         }
         // [OK] Cookie valid
         else {
-            let userID = Number.parseInt(user.id);
             // [KO] User ID invalid
             if(isNaN(userID)){
                 reject({ code: 400, route: "GetFeeds", message: "Invalid user ID. Corrupted cookie ?", error: "Invalid user ID." });
             }
             // [OK] User ID valid
             else {
-                let query = "SELECT `sagas`.* FROM `user_feeds` as UF JOIN `sagas` ON UF.`sagaID`=`sagas`.`id` WHERE UF.`userID`=?";
-                mysql.query(query, [userID], (err, row, fields) => {
+                let query = "\
+                    SELECT `sagas`.`id`, \
+                        `sagas`.`title`, \
+                        `sagas`.`image`, \
+                        `sagas`.`author`, \
+                        `sagas`.`creation`, \
+                        `sagas`.`url` \
+                    FROM `user_feeds` as UF \
+                    JOIN `sagas` \
+                        ON UF.`sagaID`=`sagas`.`id` \
+                    WHERE UF.`userID`=? \
+                ";
+
+                mysql.query(query, [userID], (err, rows, fields) => {
                     // [KO] MySQL errors handler
                     if (err) {
                         reject({ code: 500, route: "GetFeeds", message: "Error with MySQL.", error: err });
@@ -27,24 +47,24 @@ export function getFeeds(req, res, mysql) {
                     // [OK] No MySQL errors
                     else {
                         // [KO] MySQL empty response.
-                        if(!row[0] || row[0].length ==0){
+                        if(!rows[0] || rows[0].length == 0){
                             resolve({ code: 200, route: "GetFeeds", message: "No feeds." });
                         }
                         // [OK] MySQL valid response
                         else {
-                            console.log(row[0]);
                             if(process.env.DEBUG) {
-                                Log.info(logTags, "");
+                                Log.info(logTags, "Feeds of " + user.name);
+                                console.log(rows.map((row) => {
+                                    return row.title;
+                                }));
                             }
 
-                            res.cookie('sagasphere_user', row[0]);
-                            resolve({ code: 200, route: "GetFeeds", message: "You're now connected." });
+                            resolve({ code: 200, route: "GetFeeds", message: "Got " + rows.length + " feed(s).", data: rows });
                         }
                     }
                 });
             }
         }
-        resolve({ code: 200, route: "GetFeeds", message: "User not found, are you registered ?" });
     });
 }
 
