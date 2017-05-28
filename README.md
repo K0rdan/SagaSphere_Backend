@@ -1,4 +1,8 @@
 # SagaSphere Backend
+## TODO
+### Update service
+Create a micro-service that will automatically fetch news from every saga and push notification to users that follow them.
+It could achieve on a news page for every users.
 ## Server
 ### Local development
 To developp locally replace in '__./sagasphere/src/index.js__' the MySQL default connectivity by :

@@ -1,7 +1,7 @@
 {
   "name": "sagasphere",
   "version": "1.0.0",
-  "description": "base container",
+  "description": "Sagasphere base container",
   "main": "./src/index.js",
   "scripts": {
     "dev": "nodemon",
@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "node-fetch": "^1.7.0",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-globals": "^1.1.0",

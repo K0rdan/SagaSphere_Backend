@@ -130,6 +130,15 @@ function initRoutes() {
             res.promise(routes.User.getFeeds(req, res, mysqlConnection));
         }
     });
+    // SAGA NEWS
+    app.get("/saga/:sagaID/news", (req, res) => {
+        if(!req.cookies.sagasphere_user) {
+            res.status(401).json({status: "ko", message: "You're not connected."});
+        }
+        else {
+            res.promise(routes.Saga.getNews(req, res, mysqlConnection));
+        }
+    });
 }
 
 initServer()
