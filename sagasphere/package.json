@@ -1,5 +1,5 @@
 {
-  "name": "sagasphere",
+  "name": "sagasphere_base",
   "version": "1.0.0",
   "description": "Sagasphere base container",
   "main": "./src/index.js",

@@ -1,7 +1,4 @@
 //////////
-// Lib imports
-import fetch from "node-fetch";
-//////////
 // Custom imports
 import { Config, Log } from "./../../utils/index";
 //////////
@@ -24,8 +21,18 @@ export function getNews(req, res, mysql) {
         }
         // [OK] Valid parameter
         else {
-            let query = "SELECT `sagas`.`newsUrl` FROM `sagas` WHERE `sagas`.`id`=?";
-            mysql.query(query, [sagaID], (err, rows, field) => {
+            let query = "\
+                SELECT \
+                    `news`.`id`, \
+                    `news`.`date`, \
+                    `news`.`url`, \
+                    `news`.`title`, \
+                    `news`.`content` \
+                FROM `news` \
+                WHERE `news`.`sagaID`=? \
+                ORDER BY `news`.`date` DESC\
+            ";
+            mysql.query(query, [sagaID], (err, rows, fields) => {
                 // [KO] MySQL errors handler
                 if (err) {
                     reject({ code: 500, route: "GetNews", message: "Error with MySQL.", error: err });
@@ -34,24 +41,11 @@ export function getNews(req, res, mysql) {
                 else {
                     // [KO] MySQL empty response.
                     if(!rows[0] || rows[0].length == 0){
-                        resolve({ code: 200, route: "GetNews", message: "No saga found." });
+                        resolve({ code: 200, route: "GetNews", message: "No news." });
                     }
                     // [OK] MySQL valid response
                     else {
-                        fetch(rows[0].newsUrl, { timeout: Config.requests.timeout })
-                            .then((response) => {
-                                if(response.ok){
-                                    console.log(response);
-                                    // TODO : Parse the XML response.
-                                }
-                                else {
-                                    reject({ code: 500, route: "GetNews", message: "News fetch response error.", error: err });
-                                }
-                            })
-                            .catch((err) => {
-                                reject({ code: 500, route: "GetNews", message: "News fetch error.", error: err });
-                            });
-                        resolve({ code: 200, route: "GetNews", message: "Got " + 'X' + " news.", data: "" });
+                        resolve({ code: 200, route: "GetNews", message: "Got " + rows.length + " news.", data: rows });
                     }
                 }
             });
