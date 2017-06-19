@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : sagasphere_mysql
--- Généré le :  lun. 29 mai 2017 à 16:26
+-- Généré le :  lun. 19 juin 2017 à 16:47
 -- Version du serveur :  5.7.18
 -- Version de PHP :  7.0.16
 
@@ -33,10 +33,11 @@ CREATE TABLE `news` (
   `id` int(11) NOT NULL,
   `sagaID` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `url` text NOT NULL,
-  `title` text NOT NULL,
-  `content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `url` mediumtext COLLATE utf8mb4_bin NOT NULL,
+  `title` mediumtext COLLATE utf8mb4_bin NOT NULL,
+  `content` mediumtext COLLATE utf8mb4_bin NOT NULL,
+  `hash` varchar(100) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -108,6 +109,7 @@ CREATE TABLE `user_feeds` (
 --
 ALTER TABLE `news`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `hash` (`hash`),
   ADD KEY `sagaID` (`sagaID`);
 
 --
@@ -145,7 +147,7 @@ ALTER TABLE `user_feeds`
 -- AUTO_INCREMENT pour la table `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT pour la table `sagas`
 --
