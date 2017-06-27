@@ -38,7 +38,7 @@ services:
             - PMA_HOST=${SAGASPHERE_PMA_HOST}
         links:
             - sagasphere_mysql
-    redis:
+    sagasphere_sessions:
         container_name: sagasphere_sessions
         image: redis:alpine
         ports:
@@ -46,3 +46,17 @@ services:
         environment:
             # Environment variables preceed by REDIS_
             - REDIS_PORT=${SAGASPHERE_REDIS_PORT}
+    sagasphere_news:
+        container_name: sagasphere_news
+        image: k0rdan/sagasphere_news:${SAGASPHERE_NEWS_VERSION}
+        environment:
+            # Environment variables preceed by SAGASPHERE_MYSQL_
+            - SAGASPHERE_MYSQL_HOST=${SAGASPHERE_MYSQL_HOST}
+            - SAGASPHERE_MYSQL_PORT=${SAGASPHERE_MYSQL_PORT}
+            - SAGASPHERE_MYSQL_LOCALADDRESS=${SAGASPHERE_MYSQL_LOCALADDRESS}
+            - SAGASPHERE_MYSQL_USER=${SAGASPHERE_MYSQL_USER}
+            - SAGASPHERE_MYSQL_PASSWORD=${SAGASPHERE_MYSQL_PASSWORD}
+            - SAGASPHERE_MYSQL_DATABASE=${SAGASPHERE_MYSQL_DATABASE}
+        links:
+            - sagasphere_mysql
+        command: ["bash","-c","cd /usr/news && yarn start"]
