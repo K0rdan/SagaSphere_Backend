@@ -1,7 +1,7 @@
-import getNews from "./getNews";
+import { getNews } from "./getNews";
 
 export const Saga = {
-    getNews: getNews
-}
+    getNews
+};
 
 export default Saga;

@@ -1,7 +1,7 @@
-import getFeeds from "./getFeeds";
+import { getFeeds } from "./getFeeds";
 
 export const User = {
-    getFeeds: getFeeds
-}
+    getFeeds
+};
 
 export default User;

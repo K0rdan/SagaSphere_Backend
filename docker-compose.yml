@@ -59,4 +59,4 @@ services:
             - SAGASPHERE_MYSQL_DATABASE=${SAGASPHERE_MYSQL_DATABASE}
         links:
             - sagasphere_mysql
-        command: ["bash","-c","cd /usr/news && yarn start"]
+        command: ["bash","-c","yarn start"]

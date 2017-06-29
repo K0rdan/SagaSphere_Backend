@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "rules": {
+    "brace-style": ["error", "stroustrup"],
+    "comma-dangle": ["error", "never"],
+    "indent": "off",
+    "max-len": "off",
+    "no-multi-str": "off",
+    "no-plusplus": "off",
+    "quotes": ["error", "double"],
+    "spaced-comment": "off"
+  }
+}
