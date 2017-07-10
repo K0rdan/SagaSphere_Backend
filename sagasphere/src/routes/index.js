@@ -12,7 +12,8 @@ export default {
     Login,
     News,
     User: {
-        getFeeds: User.getFeeds
+        getFeeds: User.getFeeds,
+        getNews: User.getNews
     },
     Saga: {
         getNews: Saga.getNews

@@ -18,10 +18,10 @@ export function Login(req, res, mysql) {
             }
 
             const query = "SELECT `id`,`name`,`email` FROM `users` WHERE `name`=? AND `pass`=? LIMIT 1;";
-            mysql.query(query, [user, pass], (err, row) => {
+            mysql.query(query, [user, pass], (error, row) => {
                 // [KO] MySQL errors handler
-                if (err) {
-                    reject({ code: 500, route, message: "Error on MySQL authentification.", error: err });
+                if (error) {
+                    reject({ code: 500, route, message: "Error on MySQL authentification.", error });
                 }
                 // [KO] MySQL empty response.
                 else if (!row[0] || row[0].length === 0) {

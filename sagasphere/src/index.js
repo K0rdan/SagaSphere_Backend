@@ -20,8 +20,9 @@ const app = express();
 const mysqlConnection = mysql.createConnection({
     host: process.env.SAGASPHERE_MYSQL_HOST || "localhost",
     localAddress: process.env.SAGASPHERE_MYSQL_LOCALADDRESS || "localhost",
+    port: process.env.SAGASPHERE_MYSQL_PORT || "3306",
     user: process.env.SAGASPHERE_MYSQL_USER || "root",
-    password: process.env.SAGASPHERE_MYSQL_PASS || "",
+    password: process.env.SAGASPHERE_MYSQL_PASSWORD || "",
     database: process.env.SAGASPHERE_MYSQL_DATABASE || "sagasphere"
 });
 
@@ -100,6 +101,7 @@ function initMySQL() {
     return new Promise((resolve, reject) => {
         mysqlConnection.connect((err) => {
             if (err) {
+                Log.err(logTags, `MySQL connection (${mysqlConnection.config.host}:${mysqlConnection.config.port}) failed.`);
                 reject(err);
             }
             else {
@@ -132,6 +134,33 @@ function initRoutes() {
         }
         else {
             res.promise(routes.User.getFeeds(req, res, mysqlConnection));
+        }
+    });
+    // USER NEWS
+    app.get("/user/news", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.status(401).json({ status: "ko", message: "You're not connected." });
+        }
+        else {
+            res.promise(routes.User.getNews(req, res, mysqlConnection));
+        }
+    });
+    // NEWS
+    app.get("/news", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.status(401).json({ status: "ko", message: "You're not connected." });
+        }
+        else {
+            res.promise(routes.News(req, res, mysqlConnection));
+        }
+    });
+    // SAGA LIST
+    app.get("/saga/list", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.status(401).json({ status: "ko", message: "You're not connected." });
+        }
+        else {
+            res.promise(routes.Saga.getList(req, res, mysqlConnection));
         }
     });
     // SAGA NEWS

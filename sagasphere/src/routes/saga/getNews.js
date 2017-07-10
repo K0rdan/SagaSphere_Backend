@@ -29,18 +29,18 @@ export function getNews(req, res, mysql) {
                 WHERE `news`.`sagaID`=? \
                 ORDER BY `news`.`date` DESC\
             ";
-            mysql.query(query, [sagaID], (err, rows) => {
+            mysql.query(query, [sagaID], (error, rows) => {
                 // [KO] MySQL errors handler
-                if (err) {
-                    reject({ code: 500, route: "GetNews", message: "Error with MySQL.", error: err });
+                if (error) {
+                    reject({ code: 500, route, message: "Error with MySQL.", error });
                 }
                 // [KO] MySQL empty response.
                 else if (!rows[0] || rows[0].length === 0) {
-                    resolve({ code: 200, route: "GetNews", message: "No news." });
+                    resolve({ code: 200, route, message: "No news." });
                 }
                 // [OK] MySQL valid response
                 else {
-                    resolve({ code: 200, route: "GetNews", message: `Got ${rows.length} news.`, data: rows });
+                    resolve({ code: 200, route, message: `Got ${rows.length} news.`, data: rows });
                 }
             });
         }

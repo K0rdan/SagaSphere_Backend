@@ -6,21 +6,37 @@ const logTags = ["SagaSphere_Base", route];
 
 export function News(req, res, mysql) {
     return new Promise((resolve, reject) => {
-        Log.info(logTags, "News route !");
-
-        // TEMP
-        const query = "";
-        mysql.query(query, [], (err, row) => {
+        if (process.env.DEBUG === "true") {
+            Log.info(logTags, "Getting news...");
+        }
+        const query = "\
+            SELECT \
+                `news`.`id`, \
+                `news`.`date`, \
+                `news`.`url`, \
+                `news`.`title`, \
+                `news`.`content` \
+            FROM `news` \
+            ORDER BY `news`.`date` DESC\
+        ";
+        mysql.query(query, [], (error, rows) => {
             // [KO] MySQL errors handler
-            if (err) {
-                reject({ code: 500, route, message: "Error on MySQL authentification.", error: err });
+            if (error) {
+                reject({ code: 500, route: "GetNews", message: "Error with MySQL.", error });
+            }
+            // [KO] MySQL empty response.
+            else if (!rows[0] || rows[0].length === 0) {
+                resolve({ code: 200, route: "GetNews", message: "No news." });
             }
             // [OK] MySQL valid response
             else {
-                resolve({ code: 200, route, message: "OK response.", row });
+                if (process.env.DEBUG) {
+                    Log.info(logTags, `Found ${rows.length} news.`);
+                }
+
+                resolve({ code: 200, route: "GetNews", message: `Got ${rows.length} news.`, data: rows });
             }
         });
-        // END TEMP
     });
 }
 
