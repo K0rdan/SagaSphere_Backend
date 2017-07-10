@@ -1,0 +1,33 @@
+{
+  "name": "sagasphere",
+  "author": "Kordan",
+  "license": "ISC",
+  "version": "1.0.0",
+  "description": "Sagasphere",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K0rdan/SagaSphere_Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/K0rdan/SagaSphere_Backend/issues"
+  },
+  "homepage": "https://github.com/K0rdan/SagaSphere_Backend#readme",
+  "scripts": {
+    "docker-run": "docker-compose up -d",
+    "docker-dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "lint:staged": "lint-staged",
+    "lint:eslint": "eslint --ignore-pattern dist ."
+  },
+  "lint-staged": {
+    "*.js": "lint:eslint"
+  },
+  "pre-commit": "lint:staged",
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.6.0",
+    "lint-staged": "^4.0.0",
+    "pre-commit": "^1.2.2"
+  }
+}
