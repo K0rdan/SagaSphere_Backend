@@ -1,6 +1,11 @@
 //////////
+// Custom imports
+import Log from "sagasphere_logger";
+
+//////////
 // Global variables
 const route = "GetNews";
+const logTags = ["SagaSphere_Base", "Saga", route];
 
 export function getNews(req, res, mysql) {
     return new Promise((resolve, reject) => {
@@ -18,6 +23,10 @@ export function getNews(req, res, mysql) {
         }
         // [OK] Valid parameter
         else {
+            if (process.env.DEBUG) {
+                Log.info(logTags, `Getting saga's (sagaID=${sagaID}) news...`);
+            }
+
             const query = "\
                 SELECT \
                     `news`.`id`, \
@@ -36,10 +45,18 @@ export function getNews(req, res, mysql) {
                 }
                 // [KO] MySQL empty response.
                 else if (!rows[0] || rows[0].length === 0) {
+                    if (process.env.DEBUG) {
+                        Log.info(logTags, `No news for sagaID=${sagaID}.`);
+                    }
+
                     resolve({ code: 200, route, message: "No news." });
                 }
                 // [OK] MySQL valid response
                 else {
+                    if (process.env.DEBUG) {
+                        Log.info(logTags, `Got ${rows.length} news for sagaID=${sagaID}.`);
+                    }
+
                     resolve({ code: 200, route, message: `Got ${rows.length} news.`, data: rows });
                 }
             });

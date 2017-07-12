@@ -118,10 +118,10 @@ function initRoutes() {
         res.set("Content-Type", "application/json");
         next();
     });
-    // LOGIN
+    // USER LOGIN
     app.post("/login", (req, res) => {
         if (!req.cookies.sagasphere_user) {
-            res.promise(routes.Login(req, res, mysqlConnection));
+            res.promise(routes.User.Login(req, res, mysqlConnection));
         }
         else {
             res.json({ status: "ok", message: "You're now connected.", user: req.cookies.sagasphere_user });
@@ -145,13 +145,15 @@ function initRoutes() {
             res.promise(routes.User.getNews(req, res, mysqlConnection));
         }
     });
-    // NEWS
+    // COMMON NEWS
     app.get("/news", (req, res) => {
         if (!req.cookies.sagasphere_user) {
             res.status(401).json({ status: "ko", message: "You're not connected." });
         }
         else {
-            res.promise(routes.News(req, res, mysqlConnection));
+            res.promise(routes.Common.getNews(req, res, mysqlConnection));
+        }
+    });
         }
     });
     // SAGA LIST

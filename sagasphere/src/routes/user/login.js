@@ -25,6 +25,7 @@ export function Login(req, res, mysql) {
                 }
                 // [KO] MySQL empty response.
                 else if (!row[0] || row[0].length === 0) {
+                    Log.info(logTags, "User not found");
                     resolve({ code: 403, route, message: "User not found, are you registered ?" });
                 }
                 // [OK] MySQL valid response

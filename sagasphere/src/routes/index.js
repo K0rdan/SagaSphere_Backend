@@ -1,17 +1,18 @@
-import { Login } from "./login";
-import { News } from "./news";
+import { Common } from "./common/index";
 import { User } from "./user/index";
 import { Saga } from "./saga/index";
 
-export * from "./login";
-export * from "./news";
+export * from "./common/index";
 export * from "./user/index";
 export * from "./saga/index";
 
 export default {
-    Login,
-    News,
+    Common: {
+        getNews: Common.getNews,
+        getSagaList: Common.getSagaList
+    },
     User: {
+        Login: User.Login,
         getFeeds: User.getFeeds,
         getNews: User.getNews
     },

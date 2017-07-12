@@ -1,14 +1,15 @@
 // Custom imports
 import Log from "sagasphere_logger";
 
-const route = "News";
-const logTags = ["SagaSphere_Base", route];
+const route = "GetNews";
+const logTags = ["SagaSphere_Base", "Common", route];
 
-export function News(req, res, mysql) {
+export function getNews(req, res, mysql) {
     return new Promise((resolve, reject) => {
         if (process.env.DEBUG === "true") {
-            Log.info(logTags, "Getting news...");
+            Log.info(logTags, "Getting news for all saga...");
         }
+
         const query = "\
             SELECT \
                 `news`.`id`, \
@@ -22,16 +23,20 @@ export function News(req, res, mysql) {
         mysql.query(query, [], (error, rows) => {
             // [KO] MySQL errors handler
             if (error) {
-                reject({ code: 500, route: "GetNews", message: "Error with MySQL.", error });
+                reject({ code: 500, route, message: "Error with MySQL.", error });
             }
             // [KO] MySQL empty response.
             else if (!rows[0] || rows[0].length === 0) {
-                resolve({ code: 200, route: "GetNews", message: "No news." });
+                if (process.env.DEBUG) {
+                    Log.info(logTags, "No news for all sagas.");
+                }
+
+                resolve({ code: 200, route, message: "No news." });
             }
             // [OK] MySQL valid response
             else {
                 if (process.env.DEBUG) {
-                    Log.info(logTags, `Found ${rows.length} news.`);
+                    Log.info(logTags, `Found ${rows.length} news for all sagas.`);
                 }
 
                 resolve({ code: 200, route: "GetNews", message: `Got ${rows.length} news.`, data: rows });
@@ -40,4 +45,4 @@ export function News(req, res, mysql) {
     });
 }
 
-export default News;
+export default getNews;
