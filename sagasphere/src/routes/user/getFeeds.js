@@ -5,7 +5,7 @@ import Log from "sagasphere_logger";
 //////////
 // Global variables
 const route = "GetFeeds";
-const logTags = ["SagaSphere_Base", route];
+const logTags = ["SagaSphere_Base", "User", route];
 
 export function getFeeds(req, res, mysql) {
     return new Promise((resolve, reject) => {

@@ -2,7 +2,7 @@
 import Log from "sagasphere_logger";
 
 const route = "Login";
-const logTags = ["SagaSphere_Base", route];
+const logTags = ["SagaSphere_Base", "User", route];
 
 export function Login(req, res, mysql) {
     return new Promise((resolve, reject) => {

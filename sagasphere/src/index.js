@@ -154,6 +154,13 @@ function initRoutes() {
             res.promise(routes.Common.getNews(req, res, mysqlConnection));
         }
     });
+    // COMMON SAGA LIST
+    app.get("/sagalist", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.status(401).json({ status: "ko", message: "You're not connected." });
+        }
+        else {
+            res.promise(routes.Common.getSagaList(req, res, mysqlConnection));
         }
     });
     // SAGA LIST
