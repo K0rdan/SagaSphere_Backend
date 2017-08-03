@@ -35,7 +35,7 @@ export function Login(req, res, mysql) {
                     }
 
                     res.cookie("sagasphere_user", row[0]);
-                    resolve({ code: 200, route, message: "You're now connected." });
+                    resolve({ code: 200, route, message: "You're now connected.", data: row[0] });
                 }
             });
         }

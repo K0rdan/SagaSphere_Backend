@@ -124,7 +124,21 @@ function initRoutes() {
             res.promise(routes.User.Login(req, res, mysqlConnection));
         }
         else {
-            res.json({ status: "ok", message: "You're now connected.", user: req.cookies.sagasphere_user });
+            console.log("coocki", req.cookies.sagasphere_user);
+            res.json({ status: "ok", message: "You're already connected.", data: req.cookies.sagasphere_user });
+        }
+    });
+    // USER LOGOUT
+    app.get("/logout", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.json({ status: "ko", message: "You were not connected." });
+        }
+        else {
+            if (process.env.DEBUG) {
+                Log.info(logTags, `User ('${req.cookies.sagasphere_user.name}') is now disconnected.`);
+            }
+            res.clearCookie("sagasphere_user");
+            res.json({ status: "ok", message: "You're now disconnected." });
         }
     });
     // USER FEEDS
