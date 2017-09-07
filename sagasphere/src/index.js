@@ -10,6 +10,7 @@ import Log from "sagasphere_logger";
 //////////
 // Custom imports
 import routes from "./routes/index";
+import { Config } from "./utils/index";
 
 //////////
 // Global variables
@@ -28,7 +29,6 @@ const mysqlConnection = mysql.createConnection({
 
 //////////
 // Entry point
-process.env.DEBUG = "true";
 if (process.env.DEBUG === "true") {
     Log.info(logTags, "Debug mode activated");
 }
@@ -124,7 +124,6 @@ function initRoutes() {
             res.promise(routes.User.Login(req, res, mysqlConnection));
         }
         else {
-            console.log("coocki", req.cookies.sagasphere_user);
             res.json({ status: "ok", message: "You're already connected.", data: req.cookies.sagasphere_user });
         }
     });
@@ -175,15 +174,6 @@ function initRoutes() {
         }
         else {
             res.promise(routes.Common.getSagaList(req, res, mysqlConnection));
-        }
-    });
-    // SAGA LIST
-    app.get("/saga/list", (req, res) => {
-        if (!req.cookies.sagasphere_user) {
-            res.status(401).json({ status: "ko", message: "You're not connected." });
-        }
-        else {
-            res.promise(routes.Saga.getList(req, res, mysqlConnection));
         }
     });
     // SAGA NEWS

@@ -1,26 +1,24 @@
 // Custom imports
 import Log from "sagasphere_logger";
 
-const route = "GetNews";
+const route = "GetSagaNews";
 const logTags = ["SagaSphere_Base", "Common", route];
 
-export function getNews(req, res, mysql) {
+export function getSagaNews(req, res, mysql) {
     return new Promise((resolve, reject) => {
         if (process.env.DEBUG === "true") {
-            Log.info(logTags, "Getting news...");
+            Log.info(logTags, "Getting news for all saga...");
         }
 
         const query = "\
-            SELECT `news`.`id`, \
-                `news`.`date`, \
-                `news`.`title`, \
-                `users`.`name` as `author`, \
-                `news`.`content` \
-            FROM `news` \
-            JOIN `users` \
-                ON `news`.`userID`=`users`.`id` \
-            ORDER BY `news`.`date` DESC \
-            LIMIT 10 \
+            SELECT \
+                `saga_news`.`id`, \
+                `saga_news`.`date`, \
+                `saga_news`.`url`, \
+                `saga_news`.`title`, \
+                `saga_news`.`content` \
+            FROM `saga_news` \
+            ORDER BY `saga_news`.`date` DESC\
         ";
         mysql.query(query, [], (error, rows) => {
             // [KO] MySQL errors handler
@@ -41,10 +39,10 @@ export function getNews(req, res, mysql) {
                     Log.info(logTags, `Found ${rows.length} news for all sagas.`);
                 }
 
-                resolve({ code: 200, route: "GetNews", message: `Got ${rows.length} news.`, data: rows });
+                resolve({ code: 200, route: "GetSagaNews", message: `Got ${rows.length} news.`, data: rows });
             }
         });
     });
 }
 
-export default getNews;
+export default getSagaNews;

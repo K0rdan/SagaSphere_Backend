@@ -9,6 +9,7 @@ export * from "./saga/index";
 export default {
     Common: {
         getNews: Common.getNews,
+        getSagaNews: Common.getSagaNews,
         getSagaList: Common.getSagaList
     },
     User: {

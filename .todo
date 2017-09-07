@@ -1,0 +1,9 @@
+# TODO
+## Resolve YARN install bugs
+On `yarn install` some bugs are 
+```
+warning "eslint-config-airbnb@15.0.1" has incorrect peer dependency "eslint@^3.19.0".
+warning "eslint-config-airbnb@15.0.1" has unmet peer dependency "eslint-plugin-jsx-a11y@^5.0.1".
+warning "eslint-config-airbnb@15.0.1" has unmet peer dependency "eslint-plugin-react@^7.0.1".
+warning "eslint-config-airbnb-base@11.2.0" has incorrect peer dependency "eslint@^3.19.0".
+```
