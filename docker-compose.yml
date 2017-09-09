@@ -9,7 +9,7 @@ services:
             - ./sagasphere:/usr/src/sagasphere
         ports: 
             - "${SAGASPHERE_PORT}:${SAGASPHERE_PORT}"
-        command: ["bash","-c","cd /usr/src/sagasphere && npm run build && npm run start"]
+        command: ["bash","-c","cd /usr/src/sagasphere && yarn build && yarn start"]
     sagasphere_mysql:
         container_name: sagasphere_mysql
         image: mysql:latest
@@ -17,7 +17,7 @@ services:
             # Default MySQL data volume
             - /var/lib/mysql
             # Init database with our SQL file
-            - ./sagasphere_mysql/database-${SAGASPHERE_ENV}.sql:/docker-entrypoint-initdb.d/database-${SAGASPHERE_ENV}.sql
+            - ./sagasphere_mysql/${SAGASPHERE_ENV}/:/docker-entrypoint-initdb.d/${SAGASPHERE_ENV}
         expose:
             # Default MySQL listening port 
             - "${SAGASPHERE_MYSQL_PORT}"

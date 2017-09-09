@@ -8,7 +8,7 @@ services:
             # Default MySQL data volume
             - /var/lib/mysql
             # Init database with our SQL file
-            - ./sagasphere_mysql/database-${SAGASPHERE_ENV}.sql:/docker-entrypoint-initdb.d/database-${SAGASPHERE_ENV}.sql
+            - ./sagasphere_mysql/${SAGASPHERE_ENV}/:/docker-entrypoint-initdb.d/${SAGASPHERE_ENV}/
         expose:
             # Default MySQL listening port 
             - "${SAGASPHERE_MYSQL_PORT}"

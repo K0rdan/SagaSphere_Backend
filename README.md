@@ -4,6 +4,11 @@
 Create a micro-service that will automatically fetch news from every saga and push notification to users that follow them.
 It could achieve on a news page for every users.
 ## Server
+### Docker-Dev environment
+To run only the MySQL server and PhpMyAdmin use the following command :
+```
+docker-compose -f docker-compose.dev.yml up -d
+```
 ### Local development
 To developp locally replace in '__./sagasphere/src/index.js__' the MySQL default connectivity by :
 ```
