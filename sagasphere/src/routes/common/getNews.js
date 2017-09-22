@@ -30,7 +30,7 @@ export function getNews(req, res, mysql) {
             // [KO] MySQL empty response.
             else if (!rows[0] || rows[0].length === 0) {
                 if (process.env.DEBUG) {
-                    Log.info(logTags, "No news for all sagas.");
+                    Log.info(logTags, "No news.");
                 }
 
                 resolve({ code: 200, route, message: "No news." });
@@ -38,7 +38,7 @@ export function getNews(req, res, mysql) {
             // [OK] MySQL valid response
             else {
                 if (process.env.DEBUG) {
-                    Log.info(logTags, `Found ${rows.length} news for all sagas.`);
+                    Log.info(logTags, `Found ${rows.length} news.`);
                 }
 
                 resolve({ code: 200, route: "GetNews", message: `Got ${rows.length} news.`, data: rows });

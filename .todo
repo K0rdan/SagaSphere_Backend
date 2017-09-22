@@ -1,5 +1,18 @@
 # TODO
-## Resolve YARN install bugs
+> __Legend__ :
+> * [ ]   Task not started
+> * […]   Task in progress
+> * [✓]   Task done
+> * [X]   Task canceled
+
+1) [ ] Resolve YARN install errors and warnings
+2) [ ] Create script to generate Docker images
+    * [ ] Docker image for Sagasphere_Base
+    * [ ] Docker image for Sagasphere_MySQL
+    * [ ] Docker image for Sagasphere_News
+
+----
+## 1) Resolve YARN install errors and warnings
 On `yarn install` some bugs are 
 ```
 warning "eslint-config-airbnb@15.0.1" has incorrect peer dependency "eslint@^3.19.0".
@@ -7,3 +20,7 @@ warning "eslint-config-airbnb@15.0.1" has unmet peer dependency "eslint-plugin-j
 warning "eslint-config-airbnb@15.0.1" has unmet peer dependency "eslint-plugin-react@^7.0.1".
 warning "eslint-config-airbnb-base@11.2.0" has incorrect peer dependency "eslint@^3.19.0".
 ```
+
+## 2) Create script to generate Docker images
+Create script in `package.json` to generate Docker Image for the micro-services.
+Think about automation build in the Docker Hub.

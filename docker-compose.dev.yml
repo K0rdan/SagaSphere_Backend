@@ -1,6 +1,24 @@
 version: "3"
 
 services:
+    sagasphere:
+        container_name: sagasphere_base
+        image: node:7-slim
+        #network_mode: "host"
+        volumes:
+            - ./sagasphere:/usr/src/sagasphere
+        ports: 
+            - "${SAGASPHERE_PORT}:${SAGASPHERE_PORT}"
+        environment:
+            - DEBUG=true
+            # Environment variables to setup MySQL connexion
+            - SAGASPHERE_MYSQL_HOST=${SAGASPHERE_MYSQL_HOST}
+            - SAGASPHERE_MYSQL_LOCALADDRESS=${SAGASPHERE_MYSQL_LOCALADDRESS}
+            - SAGASPHERE_MYSQL_PORT=${SAGASPHERE_MYSQL_PORT}
+            - SAGASPHERE_MYSQL_USER=${SAGASPHERE_MYSQL_USER}
+            - SAGASPHERE_MYSQL_PASSWORD=${SAGASPHERE_MYSQL_PASSWORD}
+            - SAGASPHERE_MYSQL_DATABASE=${SAGASPHERE_MYSQL_DATABASE}
+        command: ["bash","-c","cd /usr/src/sagasphere && yarn build && yarn start"]
     sagasphere_mysql:
         container_name: sagasphere_mysql
         image: mysql:latest
@@ -39,17 +57,3 @@ services:
         environment:
             # Environment variables preceed by REDIS_
             - REDIS_PORT=${SAGASPHERE_REDIS_PORT}
-    sagasphere_news:
-        container_name: sagasphere_news
-        image: k0rdan/sagasphere_news:${SAGASPHERE_NEWS_VERSION}
-        environment:
-            # Environment variables preceed by SAGASPHERE_MYSQL_
-            - SAGASPHERE_MYSQL_HOST=${SAGASPHERE_MYSQL_HOST}
-            - SAGASPHERE_MYSQL_PORT=${SAGASPHERE_MYSQL_PORT}
-            - SAGASPHERE_MYSQL_LOCALADDRESS=${SAGASPHERE_MYSQL_LOCALADDRESS}
-            - SAGASPHERE_MYSQL_USER=${SAGASPHERE_MYSQL_USER}
-            - SAGASPHERE_MYSQL_PASSWORD=${SAGASPHERE_MYSQL_PASSWORD}
-            - SAGASPHERE_MYSQL_DATABASE=${SAGASPHERE_MYSQL_DATABASE}
-        depends_on:
-            - sagasphere_mysql
-        command: ["bash","-c","yarn start"]

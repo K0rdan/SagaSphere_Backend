@@ -2,14 +2,21 @@ version: "3"
 
 services:
     sagasphere:
-        container_name: sagasphere
-        image: node:7-slim
         network_mode: "host"
-        volumes:
-            - ./sagasphere:/usr/src/sagasphere
+        container_name: sagasphere_base
+        image: k0rdan/sagasphere_base:${SAGASPHERE_VERSION}
         ports: 
             - "${SAGASPHERE_PORT}:${SAGASPHERE_PORT}"
-        command: ["bash","-c","cd /usr/src/sagasphere && yarn build && yarn start"]
+        environment:
+            - DEBUG=true
+            # Environment variables to setup MySQL connexion
+            - SAGASPHERE_MYSQL_HOST=${SAGASPHERE_MYSQL_HOST}
+            - SAGASPHERE_MYSQL_LOCALADDRESS=${SAGASPHERE_MYSQL_LOCALADDRESS}
+            - SAGASPHERE_MYSQL_PORT=${SAGASPHERE_MYSQL_PORT}
+            - SAGASPHERE_MYSQL_USER=${SAGASPHERE_MYSQL_USER}
+            - SAGASPHERE_MYSQL_PASSWORD=${SAGASPHERE_MYSQL_PASSWORD}
+            - SAGASPHERE_MYSQL_DATABASE=${SAGASPHERE_MYSQL_DATABASE}
+        command: ["bash","-c","cd /usr/src/sagasphere && yarn start"]
     sagasphere_mysql:
         container_name: sagasphere_mysql
         image: mysql:latest
