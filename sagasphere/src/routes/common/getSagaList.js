@@ -10,7 +10,28 @@ export function getSagaList(req, res, mysql) {
             Log.info(logTags, "Getting saga list...");
         }
 
-        const query = "SELECT id, title, image, author, creation, url, newsUrl FROM sagas ORDER BY sagas.title;";
+        const query = "\
+            SELECT \
+                `sagas`.`id`, \
+                `sagas`.`title`, \
+                `sagas`.`image`, \
+                `sagas`.`author`, \
+                `sagas`.`creation`, \
+                `sagas`.`url`, \
+                `sagas`.`newsUrl`, \
+                `tracksInfo`.`tracks`, \
+                `tracksInfo`.`duration` \
+            FROM `sagas` \
+            LEFT JOIN ( \
+                SELECT \
+                    `tracks`.`sagaID`, \
+                    COUNT(`tracks`.`trackNumber`) AS `tracks`, \
+                    SUM(`tracks`.`duration`) AS `duration` \
+                FROM `tracks` \
+                GROUP BY `tracks`.`sagaID` \
+            ) AS `tracksInfo` \
+            ON `tracksInfo`.`sagaID`=`sagas`.`id` \
+        ";
         mysql.query(query, [], (error, rows) => {
             // [KO] MySQL errors handler
             if (error) {
