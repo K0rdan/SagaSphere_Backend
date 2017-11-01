@@ -219,6 +219,15 @@ function initRoutes() {
             res.promise(routes.Saga.getNews(req, res, mysqlConnection));
         }
     });
+    // SAGA TRACKS
+    app.get("/saga/:sagaID/tracklist", (req, res) => {
+        if (!req.cookies.sagasphere_user) {
+            res.status(401).json({ status: "ko", message: "You're not connected." });
+        }
+        else {
+            res.promise(routes.Saga.getTracks(req, res, mysqlConnection));
+        }
+    });
 }
 
 initServer()

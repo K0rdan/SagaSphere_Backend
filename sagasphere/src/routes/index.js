@@ -18,6 +18,7 @@ export default {
         getNews: User.getNews
     },
     Saga: {
-        getNews: Saga.getNews
+        getNews: Saga.getNews,
+        getTracks: Saga.getTracks
     }
 };
